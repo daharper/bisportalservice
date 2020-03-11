@@ -87,9 +87,21 @@ namespace BizportalService
 
             var serializer = new XmlSerializer(typeof(Settings));
             
-            using (var fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                settings = (Settings)serializer.Deserialize(fileStream);
+                settings = (Settings)serializer.Deserialize(fs);
+            }
+
+            if (!File.Exists(settings.BatchFile))
+            {
+                throw new FileNotFoundException(
+                    $"Batch file does not exist: {settings.BatchFile}");
+            }
+
+            if (!File.Exists(settings.JarFile))
+            {
+                throw new FileNotFoundException(
+                    $"Jar file does not exist: {settings.JarFile}");
             }
 
             settings.Filename = filename;
@@ -108,7 +120,7 @@ namespace BizportalService
             }
             catch { /* do nothing - permission problem etc. */ }
 
-            if (string.IsNullOrEmpty(filename))
+            if (!File.Exists(filename))
             {
                 filename = defaultFilename;
             }

@@ -24,6 +24,8 @@ namespace BizportalService
     /// will update the Settings.xml directly with the new file path,
     /// which will trigger this class to stop the existing process
     /// and start a new one.
+    ///
+    /// See Overview.txt for more information
     /// </summary>
     public class ChangeManager : IDisposable
     {
@@ -40,22 +42,14 @@ namespace BizportalService
             var filename = Settings.ResolveFilename();
             _settings = Settings.Load(filename);
 
-            if (!File.Exists(_settings.BatchFile))
-            {
-                throw new FileNotFoundException($"Batch file does not exist: {_settings.BatchFile}");
-            }
-
-            if (!File.Exists(_settings.JarFile))
-            {
-                throw new FileNotFoundException($"Jar file does not exist: {_settings.JarFile}");
-            }
-
             Log.WriteEnvironment(_settings);
-            Log.WriteLine("* initiating process restart");
+            Log.WriteLine("* initiating process start up");
 
+            // start the process up
             _processManager = new ProcessManager(_settings);
             _processManager.StartProcess(_settings);
 
+            // set up our change watcher
             if (_settings.MonitorChanges)
             {
                 _watcher = new FileSystemWatcher
@@ -100,6 +94,7 @@ namespace BizportalService
         {
             if (!EventFilter.CanAccept(EventType.Any)) return;
 
+            // this is triggered by a file overwrite
             if (e.FullPath.EndsWith(".jar"))
             {
                 ProcessNewFile(e.FullPath);
@@ -109,12 +104,12 @@ namespace BizportalService
             if (string.CompareOrdinal(e.FullPath, _settings.Filename) != 0) return;
 
             Log.WriteLine($"* settings update detected");
-
             var prevSettings = new Settings(_settings);
 
             Log.WriteLine("* loaded new settings");
             _settings = Settings.Load(_settings.Filename);
 
+            // if neither JarFile nor BatchFile has changed, then there's nothing to do
             if (string.CompareOrdinal(prevSettings.JarFile, _settings.JarFile) == 0 &&
                 string.CompareOrdinal(prevSettings.BatchFile, _settings.BatchFile) == 0)
             {
@@ -125,6 +120,11 @@ namespace BizportalService
             _processManager.RestartProcess(_settings);
         }
 
+        /// <summary>
+        /// Processes a new file, if it is not an overwrite of the running file
+        /// then the settings file is first updated.
+        /// </summary>
+        /// <param name="filename">A new file dropped into the settings folder</param>
         private void ProcessNewFile(string filename)
         {
             Log.WriteLine($"* new jar found detected: {filename}");

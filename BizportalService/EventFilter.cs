@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace BizportalService
 {
+    /// <summary>
+    /// The type of events being filtered.
+    /// </summary>
     public enum EventType
     {
         Any,
@@ -10,6 +13,12 @@ namespace BizportalService
         Created
     };
 
+    /// <summary>
+    /// The FileSystemWatcher can raise multiple events for a change,
+    /// for example a Notepad save raises 2 events. We want to avoid
+    /// triggering multiple restarts of the process, so this class
+    /// offers a way to filter events by timing proximity.
+    /// </summary>
     public class EventFilter
     {
         private static readonly EventFilter Instance = new EventFilter();
@@ -21,6 +30,11 @@ namespace BizportalService
             {EventType.Created, 0}
         };
 
+        /// <summary>
+        /// Determines whether this event can be accepted, or whether it
+        /// should be ignored.
+        /// </summary>
+        /// <param name="type">The type of event.</param>
         public bool CanAcceptEvent(EventType type)
         {
             var tickCount = Environment.TickCount;

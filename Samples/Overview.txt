@@ -1,0 +1,88 @@
+This service:
+    * configures itself from a settings file 
+    * executes the specified batch file providing the jar file as argument
+    * monitors changes in the settings file folder and reacts accordingly
+
+There are three types of changes:
+    * A new jar file is dropped in the settings folder
+    * An executing jar file is overwritten in the settings folder
+    * The batchfile or jar file setting is updated in the settings file
+
+The services looks for the settings.xml in the following places:
+    * first it tries BIZPORTAL_SETTINGS environment variable 
+    * if not, it defaults to d:\bizportalReskin\api\Settings.xml
+    
+    (See Settings.ResolveFilename() for more details)
+
+Prepare the settings:
+    * configure the settings file and copy it to the base folder (i.e. d:\bizportalReskin\api)
+    * ensure the fully qualified path of batch file and jar file points to the correct artifacts
+    * the batch file should expect a single argument which is the jar file name (see below example)
+
+Installing the service:
+    * cd to .NET Framework 4.0 folder (i.e. c:\Windows\Microsoft.NET\Framework\v4.0.30319)
+    * in cmd (admin) run: installutil.exe d:\path_to_bizportal\BizportalService.exe    
+    
+    (Install .NET Framework 4.0 if it is missing, easy than using sc.exe which often requires reboots)
+
+Running the service:
+    * ensure Spring is not running (for bizportal)
+    * the service is configured to start automatically on boot
+    * to start it for the first time without rebooting:
+        - press Win + R
+        - type: services.msc
+        - select for BizportalService
+        - click 'start'
+
+Verify everything is okay:
+    * The service should start without issue, and stay 'started' in services.msc
+    * navigate to the Spring localhost URL confirm spring is running
+
+    (configuring a service can sometimes be a chore, the file might not be in the right place, 
+    permissions may not be adequate, etc. if there are issues, you may need to update the
+    code and redeploy. If the service is not running, you should be able to deploy over
+    the top of the previous bizportalservice.exe without re-installing the service.)
+    
+If you need to uninstall the service:
+    * cd to the .net framework (4) folder again
+    * run: installutil.exe /uninstall d:\path_to_bizportal\BizportalService.exe
+    * refresh the services view, it should be gone
+
+Example settings file:
+
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Filename>c:\Source\Settings.xml</Filename>
+  <BatchFile>c:\Source\startup.bat</BatchFile>
+  <JarFile>c:\Source\demo-0.0.1-SNAPSHOT.jar</JarFile>
+  <MonitorChanges>true</MonitorChanges>
+</Settings>
+
+Example batch file:
+
+java -jar %1
+
+Example directory structure:
+
+c:\source\
+    settings.xml
+    demo-0.0.1-SNAPSHOT.jar
+    startup.bat
+
+This is fine for SIT or UAT, but in PROD you may wish to version releases and update the config to
+point to the new jar file, i.e.
+
+c:\source\
+    settings.xml
+    startup.bat
+    RELEASE_1\
+        demo-0.0.1-SNAPSHOT.jar
+    RELEASE_2\
+        demo-0.0.2-SNAPSHOT.jar
+
+You don't have to do this, you can just drop newer versions directly in the base folder (c:\source in this case)
+and the configuration file will automatically be updated to use this new file, and it will stop the previous
+process and run with the new configuration.
+
+There should be no need to move the batch file, and this hasn't been tested, but it should be no problem
+as we are using fully qualified filenames in the settings file.

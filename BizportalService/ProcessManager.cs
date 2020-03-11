@@ -54,18 +54,6 @@ namespace BizportalService
 
             Log.WriteLine($"* starting process to execute: {_settings.JarFile}");
 
-            if (!File.Exists(_settings.JarFile))
-            {
-                Log.WriteLine($"* settings file not found error: {_settings.JarFile}");
-                return;
-            }
-
-            if (!File.Exists(_settings.BatchFile))
-            {
-                Log.WriteLine($"batch file not found error: {_settings.BatchFile}");
-                return;
-            }
-
             var startInfo = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
@@ -103,6 +91,9 @@ namespace BizportalService
             StopProcess();
         }
 
+        /// <summary>
+        /// Kills the jar file process, whether started by this service or not.
+        /// </summary>
         private void KillChildProcesses()
         {
             var searcher = new ManagementObjectSearcher(
@@ -123,11 +114,7 @@ namespace BizportalService
 
                     Log.WriteLine($"\t  => killed [{process.Id}]");
 
-                    if (!process.HasExited)
-                    {
-                        process.Kill();
-                    }
-
+                    if (!process.HasExited) process.Kill();
                     process.Dispose();
                 }
             }

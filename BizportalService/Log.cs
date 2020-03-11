@@ -3,6 +3,9 @@ using System.Diagnostics;
 
 namespace BizportalService
 {
+    /// <summary>
+    /// Basic debug time console logger.
+    /// </summary>
     public static class Log
     {
         [Conditional("DEBUG")]
