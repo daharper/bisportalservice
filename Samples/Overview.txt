@@ -18,6 +18,7 @@ Prepare the settings:
     * configure the settings file and copy it to the base folder (i.e. d:\bizportalReskin\api)
     * ensure the fully qualified path of batch file and jar file points to the correct artifacts
     * the batch file should expect a single argument which is the jar file name (see below example)
+    * copy the bizportal.exe (and .pdb for symbols if wanted) to the base folder
 
 Installing the service:
     * cd to .NET Framework 4.0 folder (i.e. c:\Windows\Microsoft.NET\Framework\v4.0.30319)
