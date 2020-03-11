@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Filename>c:\Source\Settings.xml</Filename>
+  <BatchFile>c:\Source\startup.bat</BatchFile>
+  <JarFile>c:\Source\demo-0.0.1-SNAPSHOT.jar</JarFile>
+  <MonitorChanges>true</MonitorChanges>
+</Settings>
