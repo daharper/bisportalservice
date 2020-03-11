@@ -4,28 +4,9 @@ using System.IO;
 namespace BizportalService
 {
     /// <summary>
-    /// Responsible for reacting to change in runtime configuration.
+    /// Responsible for reacting to change at runtime.
     ///
-    /// There are two types of change:
-    ///
-    /// 1. User drops a new .jar file into the base folder (SIT/UAT)
-    /// 2. User updates the Settings.xml file (PROD)
-    ///
-    /// In the first scenario, used mainly in SIT/UAT, new releases
-    /// are dropped in the same folder. Since the process is running
-    /// the file cannot be replaced, a new filename is provided by
-    /// the user, i.e. MyApplication(2).jar, which will trigger the
-    /// this class to stop the existing process, update the
-    /// Settings.xml with the new file name, then execute the new file.
-    ///
-    /// In the second scenario, used in PROD, new releases are put in
-    /// their own subfolder (i.e. RELEASE1, RELEASE2 etc). This enables
-    /// easy rollback if there is a problem. In this case, the user
-    /// will update the Settings.xml directly with the new file path,
-    /// which will trigger this class to stop the existing process
-    /// and start a new one.
-    ///
-    /// See Overview.txt for more information
+    /// See Overview.txt for more information.
     /// </summary>
     public class ChangeManager : IDisposable
     {
