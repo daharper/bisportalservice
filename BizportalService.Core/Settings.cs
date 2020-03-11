@@ -42,12 +42,12 @@ namespace BizportalService.Core
         /// <summary>
         /// The fully qualified filename of the batch file to execute.
         /// </summary>
-        public string BatchFile { get; set; } = @"c:\Source\startup.bat"; //@"d:\bizportalReskin\api\StartReskinApi.bat";
+        public string BatchFile { get; set; } = @"d:\bizportalReskin\api\StartReskinApi.bat";
 
         /// <summary>
         /// The fully qualified filename of the jar to execute.
         /// </summary>
-        public string JarFile { get; set; } = @"c:\source\demo-0.0.1-SNAPSHOT.jar"; // d:\...
+        public string JarFile { get; set; } = @"d:\bizportalReskin\api\bizportal-api-1.0.0-SNAPSHOT.jar";
 
         /// <summary>
         /// Determines whether to monitor deployment changes.
@@ -98,7 +98,7 @@ namespace BizportalService.Core
 
         public static string ResolveFilename()
         {
-            const string defaultFilename = @"c:\Source\Settings.xml";
+            const string defaultFilename = @"d:\bizportalReskin\api\Settings.xml";
 
             string filename = null;
 
