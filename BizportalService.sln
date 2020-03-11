@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizportalService", "Bizport
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizportalConsole", "BizportalConsole\BizportalConsole.csproj", "{76131CA4-7983-4E11-B84D-E3A42A27BA70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizportalService.Core", "BizportalService.Core\BizportalService.Core.csproj", "{8605C1BF-3861-461D-8512-1996209532FA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{76131CA4-7983-4E11-B84D-E3A42A27BA70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76131CA4-7983-4E11-B84D-E3A42A27BA70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76131CA4-7983-4E11-B84D-E3A42A27BA70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8605C1BF-3861-461D-8512-1996209532FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8605C1BF-3861-461D-8512-1996209532FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8605C1BF-3861-461D-8512-1996209532FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8605C1BF-3861-461D-8512-1996209532FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,4 @@
 ﻿using System.ServiceProcess;
-using BizportalService.Core;
 
 namespace BizportalService
 {

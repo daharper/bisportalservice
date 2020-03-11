@@ -44,9 +44,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BizportalService.Core\BizportalService.Core.csproj">
-      <Project>{8605C1BF-3861-461D-8512-1996209532FA}</Project>
-      <Name>BizportalService.Core</Name>
+    <ProjectReference Include="..\BizportalService\BizportalService.csproj">
+      <Project>{8B834848-8992-4B35-A4C5-8C96189F72CE}</Project>
+      <Name>BizportalService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
