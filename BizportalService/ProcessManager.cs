@@ -72,12 +72,20 @@ namespace BizportalService
 
             var startInfo = new ProcessStartInfo
             {
-                FileName = "java",
-                Arguments = $"-jar {_settings.JarFile}"
+                FileName = "cmd.exe",
+                Arguments = $"/C {_settings.BatchFile} \"{_settings.JarFile}\""
             };
+
+                /* working - but change management of process, can kill it directly
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = "java",
+                    Arguments = $"-jar {_settings.JarFile}"
+                };*/
 
             _process = new Process { StartInfo = startInfo };
             _process.Start();
+
             //_process.WaitForExit(60000);
         }
 
