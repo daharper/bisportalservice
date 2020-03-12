@@ -23,7 +23,7 @@ namespace BizportalService
     {
         private static readonly EventFilter Instance = new EventFilter();
 
-        private readonly Dictionary<EventType, int> _tickCounts = new Dictionary<EventType, int>()
+        private readonly Dictionary<EventType, int> _tickCounts = new Dictionary<EventType, int>
         {
             {EventType.Any, 0},
             {EventType.Changed, 0},
@@ -44,12 +44,12 @@ namespace BizportalService
 
             if (accepted) 
             {
-                Log.WriteLine($"* {type} accepted");
+                Log.Info($"{type} accepted (event)");
                 _tickCounts[type] = tickCount;
             }
             else
             {
-                Log.WriteLine($"* {type} ignored");
+                Log.Info($"{type} ignored (event)");
             }
 
             return accepted;

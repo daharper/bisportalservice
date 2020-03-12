@@ -27,11 +27,13 @@ namespace BizportalService
         /// </summary>
         public void StopProcess()
         {
-            Log.WriteLine($"* stopping any child processes:");
-      
-            KillChildProcesses();
+            Log.Info($"stopping any java (jarfile) processes");
+
+            StopChildJavaProcesses();
 
             if (_process == null) return;
+
+            Log.Info("cleaning up the batch process");
 
             if (!_process.HasExited)
             {
@@ -52,7 +54,7 @@ namespace BizportalService
 
             _settings = settings;
 
-            Log.WriteLine($"* starting process to execute: {_settings.JarFile}");
+            Log.Info($"starting process to execute: {_settings.JarFile}");
 
             var startInfo = new ProcessStartInfo
             {
@@ -78,8 +80,9 @@ namespace BizportalService
         {
             _settings = settings;
 
-            Log.WriteEnvironment(_settings);
-            Log.WriteLine("* restarting spring with new configuration:");
+            Log.Info("restarting with new configuration:");
+            Log.Environment(_settings);
+            
             StartProcess(_settings);
         }
 
@@ -94,29 +97,30 @@ namespace BizportalService
         /// <summary>
         /// Kills the jar file process, whether started by this service or not.
         /// </summary>
-        private void KillChildProcesses()
+        private void StopChildJavaProcesses()
         {
-            var searcher = new ManagementObjectSearcher(
-                $"select * from Win32_Process where name = \"java.exe\"");
+            const string wmiQuery = "select * from Win32_Process where name = \"java.exe\"";
+
+            var searcher = new ManagementObjectSearcher(wmiQuery);
 
             foreach (var obj in searcher.Get())
             {
                 var commandLine = Convert.ToString(obj["commandline"]).ToLowerInvariant();
                 var jarFile = Path.GetFileName(_settings.JarFile).ToLowerInvariant();
-                var baseFolder = _settings.Folder.ToLowerInvariant();
+                var baseFolder = Settings.BaseFolder.ToLowerInvariant();
 
-                Log.WriteLine($"\t* detected java process: {commandLine}");
+                Log.Info($"detected java process: {commandLine}");
 
-                if (commandLine.Contains(jarFile) || commandLine.Contains(baseFolder))
-                {
-                    var pid = Convert.ToInt32(obj["ProcessID"]);
-                    var process = Process.GetProcessById(pid);
+                if (!commandLine.Contains(jarFile) && 
+                    !commandLine.Contains(baseFolder)) continue;
 
-                    Log.WriteLine($"\t  => killed [{process.Id}]");
+                var pid = Convert.ToInt32(obj["ProcessID"]);
+                var process = Process.GetProcessById(pid);
 
-                    if (!process.HasExited) process.Kill();
-                    process.Dispose();
-                }
+                Log.Info($"=> stopped [{process.Id}]");
+
+                if (!process.HasExited) process.Kill();
+                process.Dispose();
             }
         }
     }

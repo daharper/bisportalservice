@@ -15,7 +15,7 @@ namespace BizportalService
     /// </summary>
     public partial class Service1 : ServiceBase
     {
-        private ChangeManager _changeManager;
+        private Kernel _kernel;
 
         public Service1()
         {
@@ -24,12 +24,12 @@ namespace BizportalService
 
         protected override void OnStart(string[] args)
         {
-            _changeManager = new ChangeManager();
+            _kernel = new Kernel();
         }
 
         protected override void OnStop()
         {
-            _changeManager?.Dispose();
+            _kernel?.Dispose();
         }
     }
 }

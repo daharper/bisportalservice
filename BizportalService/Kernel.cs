@@ -8,7 +8,7 @@ namespace BizportalService
     ///
     /// See Overview.txt for more information.
     /// </summary>
-    public class ChangeManager : IDisposable
+    public class Kernel : IDisposable
     {
         private Settings _settings;
         private readonly FileSystemWatcher _watcher;
@@ -18,13 +18,12 @@ namespace BizportalService
         /// Creates a new instance of the Change Manager type initialized with
         /// the specified settings. 
         /// </summary>
-        public ChangeManager()
+        public Kernel()
         {
-            var filename = Settings.ResolveFilename();
-            _settings = Settings.Load(filename);
+            _settings = Settings.Load();
 
-            Log.WriteEnvironment(_settings);
-            Log.WriteLine("* initiating process start up");
+            Log.Environment(_settings);
+            Log.Info("initiating process start up");
 
             // start the process up
             _processManager = new ProcessManager(_settings);
@@ -33,9 +32,11 @@ namespace BizportalService
             // set up our change watcher
             if (_settings.MonitorChanges)
             {
+                Log.Info("starting change monitor");
+
                 _watcher = new FileSystemWatcher
                 {
-                    Path = _settings.Folder,
+                    Path = Settings.BaseFolder,
                     NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName,
                     EnableRaisingEvents = true
                 };
@@ -50,8 +51,12 @@ namespace BizportalService
         /// </summary>
         public void Dispose()
         {
+            Log.Info("cleaning up resources");
+
             _watcher?.Dispose();
             _processManager?.Dispose();
+
+            Log.Close();
         }
 
         /// <summary>
@@ -78,23 +83,24 @@ namespace BizportalService
             // this is triggered by a file overwrite
             if (e.FullPath.EndsWith(".jar"))
             {
+                Log.Info("executing process file has been overwritten");
                 ProcessNewFile(e.FullPath);
                 return;
             }
 
-            if (string.CompareOrdinal(e.FullPath, _settings.Filename) != 0) return;
+            if (string.CompareOrdinal(e.FullPath, Settings.SettingsFile) != 0) return;
 
-            Log.WriteLine($"* settings update detected");
+            Log.Info($"settings update detected");
             var prevSettings = new Settings(_settings);
 
-            Log.WriteLine("* loaded new settings");
-            _settings = Settings.Load(_settings.Filename);
+            Log.Info("loaded new settings");
+            _settings = Settings.Load();
 
             // if neither JarFile nor BatchFile has changed, then there's nothing to do
             if (string.CompareOrdinal(prevSettings.JarFile, _settings.JarFile) == 0 &&
                 string.CompareOrdinal(prevSettings.BatchFile, _settings.BatchFile) == 0)
             {
-                Log.WriteLine("* no file changes detected, nothing to do.");
+                Log.Info("no file changes detected, nothing to do");
                 return;
             }
 
@@ -108,11 +114,11 @@ namespace BizportalService
         /// <param name="filename">A new file dropped into the settings folder</param>
         private void ProcessNewFile(string filename)
         {
-            Log.WriteLine($"* new jar found detected: {filename}");
+            Log.Info($"new jar found detected: {filename}");
 
             if (string.CompareOrdinal(filename, _settings.JarFile) != 0)
             {
-                Log.WriteLine("* updating settings file");
+                Log.Info("updating settings file");
                 _settings.JarFile = filename;
                 _settings.Save();
             }

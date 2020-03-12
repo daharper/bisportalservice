@@ -11,7 +11,7 @@ namespace BizportalConsole
             Console.WriteLine("> starting up...");
             Console.WriteLine();
 
-            var changeManager = new ChangeManager();
+            var changeManager = new Kernel();
 
             Console.WriteLine();
             Console.WriteLine("> running...press enter to stop");

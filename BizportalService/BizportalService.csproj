@@ -43,8 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChangeManager.cs" />
+    <Compile Include="Kernel.cs" />
     <Compile Include="EventFilter.cs" />
+    <Compile Include="Failure.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="ProjectInstaller.cs">
