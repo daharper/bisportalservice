@@ -77,6 +77,11 @@ namespace BizportalService
         public bool MonitorChanges { get; set; } = true;
 
         /// <summary>
+        /// Number of seconds to wait for initial process to complete.
+        /// </summary>
+        public int WaitTimeInSecs { get; set; } = 45;
+
+        /// <summary>
         /// Saves the settings to file.
         /// </summary>
         public void Save()

@@ -56,20 +56,6 @@ namespace BizportalService
 
             Log.Info($"starting process to execute: {_settings.JarFile}");
 
-            /*
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = $"/C {_settings.BatchFile} \"{_settings.JarFile}\"",
-                CreateNoWindow = true,
-                ErrorDialog = false,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-            */
-
             var startInfo = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
@@ -78,16 +64,9 @@ namespace BizportalService
                 WindowStyle = ProcessWindowStyle.Normal
             };
 
-                /* working - but change management of process, can kill it directly
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = "java",
-                    Arguments = $"-jar {_settings.JarFile}"
-                };*/
-
             _process = new Process { StartInfo = startInfo };
             _process.Start();
-            _process.WaitForExit(30000);
+            _process.WaitForExit(_settings.WaitTimeInSecs * 1000);
         }
 
         /// <summary>

@@ -116,7 +116,8 @@ namespace BizportalService
             sb.AppendLine($"\tsettings file: {Settings.SettingsFile}");
             sb.AppendLine($"\tbatch file:    {settings.BatchFile}");
             sb.AppendLine($"\tjar file:      {settings.JarFile}");
-            sb.Append($"\tmonitoring:    {settings.MonitorChanges}");
+            sb.AppendLine($"\twait time:     {settings.WaitTimeInSecs}");
+            sb.Append($"\tmonitoring:        {settings.MonitorChanges}");
             Info(sb.ToString());
         }
 
