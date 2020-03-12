@@ -35,6 +35,11 @@ namespace BizportalService
         // initialization
         static Log()
         {
+            if (File.Exists(Settings.LogFile))
+            {
+                File.Delete(Settings.LogFile);
+            }
+
             Writer = new StreamWriter(Settings.LogFile) {AutoFlush = true};
             Info("log file has been initialized.");
 
@@ -49,9 +54,9 @@ namespace BizportalService
             var line = $"{timestamp}: {LogLabels[category]} - {text}";
 
             Writer.WriteLine(line);
-#if DEBUG
+//#if DEBUG
             Console.WriteLine(line);
-#endif
+//#endif
         }
 
         /// <summary>

@@ -56,6 +56,7 @@ namespace BizportalService
 
             Log.Info($"starting process to execute: {_settings.JarFile}");
 
+            /*
             var startInfo = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
@@ -67,10 +68,17 @@ namespace BizportalService
                 UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden
             };
+            */
+
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "java",
+                Arguments = $"-jar {_settings.JarFile}"
+            };
 
             _process = new Process { StartInfo = startInfo };
             _process.Start();
-            _process.WaitForExit(60000);
+            //_process.WaitForExit(60000);
         }
 
         /// <summary>

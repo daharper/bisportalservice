@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Management.Instrumentation;
+﻿using System.IO;
 using System.Xml.Serialization;
 
 namespace BizportalService
