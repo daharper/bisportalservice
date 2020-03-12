@@ -73,7 +73,9 @@ namespace BizportalService
             var startInfo = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
-                Arguments = $"/C {_settings.BatchFile} \"{_settings.JarFile}\""
+                Arguments = $"/C {_settings.BatchFile} \"{_settings.JarFile}\"",
+                WorkingDirectory = Settings.BaseFolder,
+                WindowStyle = ProcessWindowStyle.Normal
             };
 
                 /* working - but change management of process, can kill it directly
@@ -85,8 +87,7 @@ namespace BizportalService
 
             _process = new Process { StartInfo = startInfo };
             _process.Start();
-
-            //_process.WaitForExit(60000);
+            _process.WaitForExit(30000);
         }
 
         /// <summary>
