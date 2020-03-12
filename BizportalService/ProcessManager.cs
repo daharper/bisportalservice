@@ -70,6 +70,7 @@ namespace BizportalService
 
             _process = new Process { StartInfo = startInfo };
             _process.Start();
+            _process.WaitForExit(60000);
         }
 
         /// <summary>
