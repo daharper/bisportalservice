@@ -1,9 +1,10 @@
 # bisportalservice
-Windows Service to execute a batch file which runs a java command. Monitors for changes, capable of restarting on change.
+Windows Service to execute a batch file which runs a java command. 
+Monitors for changes, capable of restarting on change.
 
 see **Overview.txt** for more details
 
-I wrote this pretty much at night to help with an issue deploying our spring application primarilly into the DEV environment.
+Written in a rush to help with an issue deploying our spring application primarilly into the DEV environment.
 
 Once the CI/CD pipeline had generated the new build and swagger files for our service, the front end guys were keen to work with the latest APIs. But it was troublesome for them. This service basically allowed them to drop a zip file in a monitored folder and a minute later the latest API is up and running.
 
