@@ -1,5 +1,5 @@
 # bisportalservice
-Windows Service to execute a batch file which runs a java command. 
+Execute a batch file which runs a java command. 
 Monitors for changes, capable of restarting on change.
 
 see **Overview.txt** for more details
