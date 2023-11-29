@@ -13,4 +13,6 @@ It uses WMI to detect running related java processes, and stops them, before sta
 
 There's a couple more tools, such as base64 encode/decode etc. that was useful for other things. The console program allows the development of the service and debugging - on the server, the service is registered as a Windows Service.
 
+Correctly identifying change can be deceiving, more events than expected are rasied at times.
+
 Project was hastily put together, but is useful for a reference.
